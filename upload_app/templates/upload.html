@@ -1,0 +1,69 @@
+<!--  django_app/templates/upload.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Media Upload Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f2f2f2;
+            padding-top: 20px;
+        }
+
+        .card {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #00b3e6;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0099cc;
+        }
+    </style>
+</head>
+<body>
+
+{% block body %}
+{% if user.is_authenticated %}
+    <p class="text-center">Welcome, {{ user.username }}!</p>
+    <div class="text-center">
+        <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+    </div>
+{% else %}
+    <div class="text-center">
+        <a href="{% url 'signup' %}" class="btn btn-primary">Sign up</a>
+        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+    </div>
+{% endif %}
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ backend_form }}
+                <button type="submit" class="btn btn-primary btn-block mt-3">Upload</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
